@@ -14,4 +14,12 @@ public interface LookupService
     public OrdersType getOrdersType( String name );
 
     public StateType getStateType( String name );
+
+    public SideType getSideType( int id );
+
+    public StatusType getStatusType( int id );
+
+    public OrdersType getOrdersType( int id );
+
+    public StateType getStateType( int id );
 }

@@ -1,170 +1,230 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
-  xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <!-- <beans:import resource="organization.xml" /> -->
-  <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
-    <beans:property name="url" value="jdbc:mysql://localhost:3306/threedog" />
-    <beans:property name="username" value="process" />
-    <beans:property name="password" value="para747" />
-  </beans:bean>
+	<!-- <beans:import resource="organization.xml" /> -->
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url"
+			value="jdbc:mysql://localhost:3306/threedog" />
+		<beans:property name="username" value="process" />
+		<beans:property name="password" value="para747" />
+	</beans:bean>
 
-  <beans:bean id="hibernateAnnotatedSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-    <beans:property name="dataSource" ref="dataSource" />
-    <beans:property name="annotatedClasses">
-      <beans:list>
-        <beans:value>com.tompy.threedog.spring.model.Player</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.Game</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.Turn</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.TurnActivation</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.Leader</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.TurnInitiative</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.TurnEfficiency</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.LeaderType</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.ActivationBrigade</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.ActivationType</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.TurnAMPool</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.SideType</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.StateType</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.OrdersType</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.StatusType</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.GameLeader</beans:value>
-        <beans:value>com.tompy.threedog.spring.model.GamePlayer</beans:value>
-      </beans:list>
-    </beans:property>
-    <beans:property name="hibernateProperties">
-      <beans:props>
-        <beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
-        <beans:prop key="hibernate.show_sql">true</beans:prop>
-      </beans:props>
-    </beans:property>
-  </beans:bean>
+	<beans:bean id="hibernateAnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+				<beans:value>com.tompy.threedog.spring.model.Player</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.Game</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.Turn</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.TurnActivation
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.Leader</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.TurnInitiative
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.TurnEfficiency
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.LeaderType
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.ActivationBrigade
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.ActivationType
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.TurnAMPool
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.SideType</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.StateType</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.OrdersType
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.StatusType
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.GameLeader
+				</beans:value>
+				<beans:value>com.tompy.threedog.spring.model.GamePlayer
+				</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">false</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
 
-  <context:component-scan base-package="com.tompy.threedog.spring" />
+	<context:component-scan base-package="com.tompy.threedog.spring" />
 
-  <tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
-  <beans:bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="controller" class="com.tompy.threedog.cli.GameControllerCliImpl">
-    <beans:property name="commandMap" ref="commands" />
-  </beans:bean>
+	<beans:bean id="controller"
+		class="com.tompy.threedog.cli.GameControllerCliImpl">
+		<beans:property name="commandMap" ref="commands" />
+	</beans:bean>
 
-  <beans:bean id="basicCommand" class="com.tompy.threedog.CommandAbstract" abstract="true">
-    <beans:property name="controller" ref="controller" />
-    <beans:property name="gameService" ref="gameService" />
-    <beans:property name="playerService" ref="playerService" />
-    <beans:property name="turnService" ref="turnService" />
-    <beans:property name="leaderService" ref="leaderService" />
-    <beans:property name="gamePlayerService" ref="gamePlayerService" />
-    <beans:property name="lookupService" ref="lookupService" />
-    <beans:property name="gameLeaderService" ref="gameLeaderService" />
-  </beans:bean>
+	<beans:bean id="basicCommand" class="com.tompy.threedog.CommandAbstract"
+		abstract="true">
+		<beans:property name="controller" ref="controller" />
+		<beans:property name="gameService" ref="gameService" />
+		<beans:property name="playerService" ref="playerService" />
+		<beans:property name="turnService" ref="turnService" />
+		<beans:property name="leaderService" ref="leaderService" />
+		<beans:property name="gamePlayerService" ref="gamePlayerService" />
+		<beans:property name="lookupService" ref="lookupService" />
+		<beans:property name="gameLeaderService" ref="gameLeaderService" />
+	</beans:bean>
 
-  <beans:bean id="playerService" class="com.tompy.threedog.spring.service.PlayerServiceImpl">
-    <beans:property name="playerDAO" ref="playerDAO" />
-  </beans:bean>
+	<beans:bean id="playerService"
+		class="com.tompy.threedog.spring.service.PlayerServiceImpl">
+		<beans:property name="playerDAO" ref="playerDAO" />
+	</beans:bean>
 
-  <beans:bean id="playerDAO" class="com.tompy.threedog.spring.dao.PlayerDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="playerDAO" class="com.tompy.threedog.spring.dao.PlayerDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="leaderService" class="com.tompy.threedog.spring.service.LeaderServiceImpl">
-    <beans:property name="leaderDAO" ref="leaderDAO" />
-  </beans:bean>
+	<beans:bean id="leaderService"
+		class="com.tompy.threedog.spring.service.LeaderServiceImpl">
+		<beans:property name="leaderDAO" ref="leaderDAO" />
+	</beans:bean>
 
-  <beans:bean id="leaderDAO" class="com.tompy.threedog.spring.dao.LeaderDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="leaderDAO" class="com.tompy.threedog.spring.dao.LeaderDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="turnService" class="com.tompy.threedog.spring.service.TurnServiceImpl">
-    <beans:property name="turnDAO" ref="turnDAO" />
-    <beans:property name="leaderService" ref="leaderService" />
-    <beans:property name="playerService" ref="playerService" />
-    <beans:property name="gameService" ref="gameService" />
-  </beans:bean>
+	<beans:bean id="turnService"
+		class="com.tompy.threedog.spring.service.TurnServiceImpl">
+		<beans:property name="turnDAO" ref="turnDAO" />
+		<beans:property name="leaderService" ref="leaderService" />
+		<beans:property name="playerService" ref="playerService" />
+		<beans:property name="gameService" ref="gameService" />
+		<beans:property name="lookupService" ref="lookupService" />
+		<beans:property name="gamePlayerService" ref="gamePlayerService" />
+	</beans:bean>
 
-  <beans:bean id="turnDAO" class="com.tompy.threedog.spring.dao.TurnDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="turnDAO" class="com.tompy.threedog.spring.dao.TurnDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="gamePlayerService" class="com.tompy.threedog.spring.service.GamePlayerServiceImpl">
-    <beans:property name="gamePlayerDAO" ref="gamePlayerDAO" />
-  </beans:bean>
+	<beans:bean id="gamePlayerService"
+		class="com.tompy.threedog.spring.service.GamePlayerServiceImpl">
+		<beans:property name="gamePlayerDAO" ref="gamePlayerDAO" />
+	</beans:bean>
 
-  <beans:bean id="gamePlayerDAO" class="com.tompy.threedog.spring.dao.GamePlayerDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="gamePlayerDAO"
+		class="com.tompy.threedog.spring.dao.GamePlayerDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="gameLeaderService" class="com.tompy.threedog.spring.service.GameLeaderServiceImpl">
-    <beans:property name="gameLeaderDAO" ref="gameLeaderDAO" />
-  </beans:bean>
+	<beans:bean id="gameLeaderService"
+		class="com.tompy.threedog.spring.service.GameLeaderServiceImpl">
+		<beans:property name="gameLeaderDAO" ref="gameLeaderDAO" />
+		<beans:property name="statusTypeDAO" ref="statusTypeDAO" />
+		<beans:property name="ordersTypeDAO" ref="ordersTypeDAO" />
+	</beans:bean>
 
-  <beans:bean id="gameLeaderDAO" class="com.tompy.threedog.spring.dao.GameLeaderDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="gameLeaderDAO"
+		class="com.tompy.threedog.spring.dao.GameLeaderDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="gameService" class="com.tompy.threedog.spring.service.GameServiceImpl">
-    <beans:property name="gameDAO" ref="gameDAO" />
-    <beans:property name="playerService" ref="playerService" />
-    <beans:property name="turnService" ref="turnService" />
-    <beans:property name="leaderService" ref="leaderService" />
-    <beans:property name="lookupService" ref="lookupService" />
-  </beans:bean>
+	<beans:bean id="gameService"
+		class="com.tompy.threedog.spring.service.GameServiceImpl">
+		<beans:property name="gameDAO" ref="gameDAO" />
+		<beans:property name="playerService" ref="playerService" />
+		<beans:property name="turnService" ref="turnService" />
+		<beans:property name="leaderService" ref="leaderService" />
+		<beans:property name="lookupService" ref="lookupService" />
+	</beans:bean>
 
-  <beans:bean id="gameDAO" class="com.tompy.threedog.spring.dao.GameDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="gameDAO" class="com.tompy.threedog.spring.dao.GameDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="stateTypeDAO" class="com.tompy.threedog.spring.dao.StateTypeDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="stateTypeDAO"
+		class="com.tompy.threedog.spring.dao.StateTypeDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="statusTypeDAO" class="com.tompy.threedog.spring.dao.StatusTypeDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="statusTypeDAO"
+		class="com.tompy.threedog.spring.dao.StatusTypeDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="ordersTypeDAO" class="com.tompy.threedog.spring.dao.OrdersTypeDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="ordersTypeDAO"
+		class="com.tompy.threedog.spring.dao.OrdersTypeDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="sideTypeDAO" class="com.tompy.threedog.spring.dao.SideTypeDAOImpl">
-    <beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
-  </beans:bean>
+	<beans:bean id="sideTypeDAO"
+		class="com.tompy.threedog.spring.dao.SideTypeDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
 
-  <beans:bean id="lookupService" class="com.tompy.threedog.spring.service.LookupServiceImpl">
-    <beans:property name="sideTypeDAO" ref="sideTypeDAO" />
-    <beans:property name="ordersTypeDAO" ref="ordersTypeDAO" />
-    <beans:property name="stateTypeDAO" ref="stateTypeDAO" />
-    <beans:property name="statusTypeDAO" ref="statusTypeDAO" />
-  </beans:bean>
+	<beans:bean id="lookupService"
+		class="com.tompy.threedog.spring.service.LookupServiceImpl">
+		<beans:property name="sideTypeDAO" ref="sideTypeDAO" />
+		<beans:property name="ordersTypeDAO" ref="ordersTypeDAO" />
+		<beans:property name="stateTypeDAO" ref="stateTypeDAO" />
+		<beans:property name="statusTypeDAO" ref="statusTypeDAO" />
+	</beans:bean>
 
-  <beans:bean id="commandStartGame" class="com.tompy.threedog.cli.CommandNewGameImpl" parent="basicCommand" />
-  <beans:bean id="commandListDetails" class="com.tompy.threedog.cli.CommandListDetailsImpl" parent="basicCommand" />
-  <beans:bean id="commandLoadGame" class="com.tompy.threedog.cli.CommandLoadGameImpl" parent="basicCommand" />
-  <beans:bean id="commandQuit" class="com.tompy.threedog.cli.CommandQuitImpl" parent="basicCommand" />
-  <beans:bean id="commandListGames" class="com.tompy.threedog.cli.CommandListGamesImpl" parent="basicCommand" />
-  <beans:bean id="commandStartTurn" class="com.tompy.threedog.cli.CommandStartTurnImpl" parent="basicCommand" />
-  <beans:bean id="commandSetCommand" class="com.tompy.threedog.cli.CommandSetCommandImpl" parent="basicCommand" />
-  <beans:bean id="commandLogin" class="com.tompy.threedog.cli.CommandLoginImpl" parent="basicCommand" />
+	<beans:bean id="commandStartGame" class="com.tompy.threedog.cli.CommandNewGameImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandListDetails"
+		class="com.tompy.threedog.cli.CommandListDetailsImpl" parent="basicCommand" />
+	<beans:bean id="commandLoadGame" class="com.tompy.threedog.cli.CommandLoadGameImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandQuit" class="com.tompy.threedog.cli.CommandQuitImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandListGames" class="com.tompy.threedog.cli.CommandListGamesImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandStartTurn" class="com.tompy.threedog.cli.CommandStartTurnImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandSetCommand"
+		class="com.tompy.threedog.cli.CommandSetCommandImpl" parent="basicCommand" />
+	<beans:bean id="commandSetFatigue"
+		class="com.tompy.threedog.cli.CommandSetFatigueImpl" parent="basicCommand" />
+	<beans:bean id="commandSetOrders" class="com.tompy.threedog.cli.CommandSetOrdersImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandSetStatus" class="com.tompy.threedog.cli.CommandSetStatusImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandLogin" class="com.tompy.threedog.cli.CommandLoginImpl"
+		parent="basicCommand" />
+	<beans:bean id="commandGiveInitiative"
+		class="com.tompy.threedog.cli.CommandGiveInitiativeImpl" parent="basicCommand" />
+	<beans:bean id="commandGiveEfficiency"
+		class="com.tompy.threedog.cli.CommandGiveEfficiencyImpl" parent="basicCommand" />
 
-  <util:map id="commands">
-    <beans:entry key="GAMESTART" value-ref="commandStartGame" />
-    <beans:entry key="LISTDETAILS" value-ref="commandListDetails" />
-    <beans:entry key="GAMELOAD" value-ref="commandLoadGame" />
-    <beans:entry key="GAMELIST" value-ref="commandListGames" />
-    <beans:entry key="STARTTURN" value-ref="commandStartTurn" />
-    <beans:entry key="SETCOMMAND" value-ref="commandSetCommand" />
-    <beans:entry key="LOGIN" value-ref="commandLogin" />
-    <beans:entry key="QUIT" value-ref="commandQuit" />
-  </util:map>
+	<util:map id="commands">
+		<beans:entry key="GAMESTART" value-ref="commandStartGame" />
+		<beans:entry key="LISTDETAILS" value-ref="commandListDetails" />
+		<beans:entry key="GAMELOAD" value-ref="commandLoadGame" />
+		<beans:entry key="GAMELIST" value-ref="commandListGames" />
+		<beans:entry key="STARTTURN" value-ref="commandStartTurn" />
+		<beans:entry key="GIVEINITIATIVE" value-ref="commandGiveInitiative" />
+		<beans:entry key="GIVEEFFICIENCY" value-ref="commandGiveEfficiency" />
+		<beans:entry key="SETCOMMAND" value-ref="commandSetCommand" />
+		<beans:entry key="SETFATIGUE" value-ref="commandSetFatigue" />
+		<beans:entry key="SETORDERS" value-ref="commandSetOrders" />
+		<beans:entry key="SETSTATUS" value-ref="commandSetStatus" />
+		<beans:entry key="LOGIN" value-ref="commandLogin" />
+		<beans:entry key="QUIT" value-ref="commandQuit" />
+	</util:map>
 
 </beans:beans>	

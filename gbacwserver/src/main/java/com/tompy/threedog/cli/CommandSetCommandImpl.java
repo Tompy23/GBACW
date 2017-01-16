@@ -13,7 +13,7 @@ public class CommandSetCommandImpl extends CommandAbstract implements Command
         
         int leaderId = Integer.parseInt( args[ 1 ] );
 
-        gameLeaderService.setCommand( gameId, leaderId, Boolean.parseBoolean( args[ 1 ] ) ? "Y" : "N" );
+        gameLeaderService.setCommand( gameId, leaderId, Boolean.parseBoolean( args[ 2 ] ) ? "Y" : "N" );
 
         Leader l = leaderService.getLeader( leaderId );
 

@@ -9,11 +9,13 @@ import com.tompy.threedog.spring.model.StateType;
 
 public interface GamePlayerService
 {
-    public SideType getSide( Game g, Player p );
+    public SideType getSide( int gameId, int playerId );
 
-    public List< Game > getGamesBySide( Player p, SideType s );
+    public StateType getState( int gameId, int playerId );
 
-    public List< Player > getPlayers( Game g );
-    
-    public void setState( Game g, Player p, StateType s );
+    public List< Game > getGamesBySide( int playerId, int sideId );
+
+    public List< Player > getPlayers( int gameId );
+
+    public void setState( int gameId, int playerId, StateType s );
 }

@@ -9,7 +9,6 @@ import com.tompy.threedog.GameController;
 import com.tompy.threedog.spring.model.Game;
 import com.tompy.threedog.spring.model.Player;
 import com.tompy.threedog.spring.model.SideType;
-import com.tompy.threedog.spring.service.PlayerService;
 
 public class GameControllerCliImpl implements GameController
 {
@@ -50,7 +49,7 @@ public class GameControllerCliImpl implements GameController
                     System.out.println( commandReturn );
                     if ( null != game )
                     {
-                        prompt = game.getDescription() + "/" + player.getName() + ">";
+                        prompt = player.getName() + "/" + game.getDescription() + ">";
                     }
                 }
             } // while play
@@ -63,7 +62,7 @@ public class GameControllerCliImpl implements GameController
         return returnValue;
     }
 
-    private String getInput( String prompt )
+    public String getInput( String prompt )
     {
         String input;
 
@@ -129,26 +128,23 @@ public class GameControllerCliImpl implements GameController
             case "STARTTURN":
             case "STU":
                 key = "STARTTURN";
-                commandList = addCommands( commandList, player.getName() );
                 break;
 
-            // TODO
             // If OC "in command" and "on map", can distribute a bonus to Corps
             // leader(s)
             // TUI <Corps Leader ID> [<Corps Leader ID>...]
             // (TURN_STARTED)
-            case "TURNINITIATIVE":
-            case "TUI":
-                key = "TURNINITIATIVE";
+            case "GIVEINITIATIVE":
+            case "GIN":
+                key = "GIVEINITIATIVE";
                 break;
 
-            // TODO
             // Can add "am bonus" to Division Leaders if appropriate
             // TUE <Division Leader ID> [<Division Leader ID>...]
             // (TURN_STARTED)
-            case "TURNEFFICIENCY":
-            case "TUE":
-                key = "TURNEFFICIENCY";
+            case "GIVEEFFICIENCY":
+            case "GEF":
+                key = "GIVEEFFICIENCY";
                 break;
 
             // TODO
@@ -198,28 +194,24 @@ public class GameControllerCliImpl implements GameController
                 key = "LISTDETAILS";
                 break;
 
-            // TODO
             // (> NOTHING)
             case "SETSTATUS":
             case "SST":
                 key = "SETSTATUS";
                 break;
 
-            // TODO
             // (> NOTHING)
             case "SETORDERS":
             case "SOR":
                 key = "SETORDERS";
                 break;
 
-            // TODO
             // (> NOTHING)
             case "SETCOMMAND":
             case "SCO":
                 key = "SETCOMMAND";
                 break;
 
-            // TODO
             // (> NOTHING)
             case "SETFATIGUE":
             case "SFA":

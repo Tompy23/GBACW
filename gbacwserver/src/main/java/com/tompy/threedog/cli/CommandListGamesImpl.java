@@ -15,37 +15,36 @@ public class CommandListGamesImpl extends CommandAbstract implements Command
     @Override
     public String doCommand( int gameId, int playerId, String[] args )
     {
-        Player player = playerService.getPlayerById( playerId );
         SideType union = lookupService.getSideType( "USA" );
         SideType confederate = lookupService.getSideType( "CSA" );
 
         StringBuilder sb = new StringBuilder();
 
         sb.append( "\nConfederate games:\n" );
-        sb.append( createGameList( player, confederate ) );
+        sb.append( createGameList( playerId, confederate ) );
 
         sb.append( "\nUnion games:\n" );
-        sb.append(  createGameList( player, union ) );
+        sb.append( createGameList( playerId, union ) );
 
         return sb.toString();
     }
 
-    private StringBuilder createGameList( Player player, SideType side )
+    private StringBuilder createGameList( int playerId, SideType side )
     {
         StringBuilder returnValue = new StringBuilder();
         String opponent = "unknown";
 
         List< Game > gameList = new ArrayList< Game >();
-        for ( Game g : gamePlayerService.getGamesBySide( player, side ) )
+        for ( Game g : gamePlayerService.getGamesBySide( playerId, side.getId() ) )
         {
             gameList.add( g );
         }
         Collections.sort( gameList );
         for ( Game g : gameList )
         {
-            for ( Player p : gamePlayerService.getPlayers( g ) )
+            for ( Player p : gamePlayerService.getPlayers( g.getId() ) )
             {
-                if ( p.getId() != player.getId() )
+                if ( p.getId() != playerId )
                 {
                     opponent = p.getName();
                     break;

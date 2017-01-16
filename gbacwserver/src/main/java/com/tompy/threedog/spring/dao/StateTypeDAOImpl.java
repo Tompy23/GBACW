@@ -34,4 +34,22 @@ public class StateTypeDAOImpl implements StateTypeDAO
         return returnValue;
     }
 
+    @Override
+    public StateType getStateType( int nameId )
+    {
+        StateType returnValue = null;
+
+        Session session = this.sessionFactory.getCurrentSession();
+
+        @SuppressWarnings( "unchecked" )
+        List< StateType > states = (List< StateType >) session.createQuery( "from StateType where id = :name " ).setParameter( "name", nameId ).list();
+
+        if ( !states.isEmpty() )
+        {
+            returnValue = states.get( 0 );
+        }
+        
+        return returnValue;
+    }
+
 }

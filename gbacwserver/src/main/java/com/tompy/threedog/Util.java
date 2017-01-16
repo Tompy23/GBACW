@@ -1,12 +1,14 @@
 package com.tompy.threedog;
 
 import java.util.List;
+import java.util.Random;
 
 import com.tompy.threedog.spring.model.GameLeader;
 import com.tompy.threedog.spring.model.Player;
 
 public class Util
 {
+    private static Random rand = new Random( System.currentTimeMillis() );
 
     public static Player findOpponent( List< Player > players, int playerId)
     {
@@ -36,5 +38,10 @@ public class Util
         }
         
         return null;
+    }
+    
+    public static int randomInt( int bottom, int top )
+    {
+        return rand.nextInt( top - bottom ) + bottom;
     }
 }

@@ -51,7 +51,9 @@ public class GameServiceImpl implements GameService
             }
         }
 
-        game.addTurn( turnService.createNextTurn( game, leaderList ) );
+        gameDAO.saveGame( game );
+
+        game.addTurn( turnService.createNextTurn( game.getId() ) );
 
         gameDAO.saveGame( game );
 

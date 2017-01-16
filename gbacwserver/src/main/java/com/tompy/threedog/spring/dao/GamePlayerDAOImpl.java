@@ -9,6 +9,7 @@ import com.tompy.threedog.spring.model.Game;
 import com.tompy.threedog.spring.model.GamePlayer;
 import com.tompy.threedog.spring.model.Player;
 import com.tompy.threedog.spring.model.SideType;
+import com.tompy.threedog.spring.model.StateType;
 
 public class GamePlayerDAOImpl implements GamePlayerDAO
 {
@@ -20,7 +21,7 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
     }
 
     @Override
-    public void saveGamePlayerSide( GamePlayer gps )
+    public void saveGamePlayer( GamePlayer gps )
     {
         Session session = this.sessionFactory.getCurrentSession();
 
@@ -28,7 +29,7 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
     }
 
     @Override
-    public SideType getSide( Game g, Player p )
+    public SideType getSide( int gameId, int playerId )
     {
         SideType returnValue = null;
 
@@ -36,7 +37,8 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
 
         @SuppressWarnings( "unchecked" )
         List< GamePlayer > gamePlayer =
-                (List< GamePlayer >) session.createQuery( "from GamePlayer where player = :player and game = :game" ).setParameter( "player", p ).setParameter( "game", g ).list();
+                (List< GamePlayer >) session.createQuery( "from GamePlayer where playerId = :player and gameId = :game" ).setParameter( "player", playerId )
+                        .setParameter( "game", gameId ).list();
 
         if ( null != gamePlayer )
         {
@@ -47,7 +49,27 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
     }
 
     @Override
-    public void setSide( Game g, Player p, String s )
+    public StateType getState( int gameId, int playerId )
+    {
+        StateType returnValue = null;
+
+        Session session = this.sessionFactory.getCurrentSession();
+
+        @SuppressWarnings( "unchecked" )
+        List< GamePlayer > gamePlayer =
+                (List< GamePlayer >) session.createQuery( "from GamePlayer where playerId = :player and gameid = :game" ).setParameter( "player", playerId )
+                        .setParameter( "game", gameId ).list();
+
+        if ( null != gamePlayer )
+        {
+            returnValue = gamePlayer.get( 0 ).getState();
+        }
+
+        return returnValue;
+    }
+
+    @Override
+    public void setSide( int gameId, int playerId, String s )
     {
         Session session = this.sessionFactory.getCurrentSession();
 
@@ -55,29 +77,20 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public List< Game > getGames( Player p, SideType s )
+    public List< Game > getGames( int playerId, int sideId )
     {
         Session session = this.sessionFactory.getCurrentSession();
 
         List< Game > returnValue = null;
 
-        returnValue = (List< Game >) session.createQuery( "select game from GamePlayer where playerId = :player and sideId = :side" ).setParameter( "player", p.getId() )
-                .setParameter( "side", s.getId() ).list();
-
-        // if ( null != gamePlayers )
-        // {
-        // returnValue = new ArrayList< Game >();
-        // for ( GamePlayer gp : gamePlayers )
-        // {
-        // returnValue.add( gp.getGame() );
-        // }
-        // }
+        returnValue = (List< Game >) session.createQuery( "select game from GamePlayer where playerId = :player and sideId = :side" ).setParameter( "player", playerId )
+                .setParameter( "side", sideId ).list();
 
         return returnValue;
     }
 
     @Override
-    public List< Player > getPlayers( Game g )
+    public List< Player > getPlayers( int gameId )
     {
         Session session = this.sessionFactory.getCurrentSession();
 
@@ -85,18 +98,31 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
 
         @SuppressWarnings( "unchecked" )
         List< Player > returnValue =
-                (List< Player >) session.createQuery( "select player from GamePlayer where gameId = :game" ).setParameter( "game", g.getId() ).list();
-
-        // if ( null != gamePlayers )
-        // {
-        // returnValue = new ArrayList< Game >();
-        // for ( GamePlayer gp : gamePlayers )
-        // {
-        // returnValue.add( gp.getGame() );
-        // }
-        // }
+                (List< Player >) session.createQuery( "select player from GamePlayer where gameId = :game" ).setParameter( "game", gameId ).list();
 
         return returnValue;
+    }
+
+    @Override
+    public GamePlayer getGamePlayer( int gameId, int playerId )
+
+    {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        GamePlayer returnValue = null;
+
+        @SuppressWarnings( "unchecked" )
+        List< GamePlayer > gamePlayers =
+                (List< GamePlayer >) session.createQuery( "from GamePlayer where gameId = :game and playerId = :player" ).setParameter( "game", gameId )
+                        .setParameter( "player", playerId ).list();
+
+        if ( null != gamePlayers )
+        {
+            returnValue = gamePlayers.get( 0 );
+        }
+
+        return returnValue;
+
     }
 
 }

@@ -46,6 +46,35 @@ public class LookupServiceImpl implements LookupService
         return stateTypeDAO.getStateType( name );
     }
 
+    @Override
+    @Transactional
+    public SideType getSideType( int id )
+    {
+        return sideTypeDAO.getSide( id );
+    }
+
+    @Override
+    @Transactional
+    public StatusType getStatusType( int id )
+    {
+        return statusTypeDAO.getStatusType( id );
+    }
+
+    @Override
+    @Transactional
+    public OrdersType getOrdersType( int id )
+    {
+        return ordersTypeDAO.getOrdersType( id );
+    }
+
+    @Override
+    @Transactional
+    public StateType getStateType( int id )
+    {
+        return stateTypeDAO.getStateType( id );
+        //return null;
+    }
+
     public void setSideTypeDAO( SideTypeDAO sideTypeDAO )
     {
         this.sideTypeDAO = sideTypeDAO;

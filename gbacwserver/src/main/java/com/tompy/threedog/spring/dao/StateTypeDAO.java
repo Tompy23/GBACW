@@ -5,4 +5,6 @@ import com.tompy.threedog.spring.model.StateType;
 public interface StateTypeDAO
 {
     public StateType getStateType( String name );
+    
+    public StateType getStateType( int nameId );
 }

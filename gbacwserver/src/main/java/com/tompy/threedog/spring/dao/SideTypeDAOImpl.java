@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.tompy.threedog.spring.model.SideType;
+import com.tompy.threedog.spring.model.StatusType;
 
 public class SideTypeDAOImpl implements SideTypeDAO
 {
@@ -32,5 +33,15 @@ public class SideTypeDAOImpl implements SideTypeDAO
         }
 
         return returnValue;
+    }
+
+    @Override
+    public SideType getSide( int id )
+    {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        SideType side = (SideType) session.get( SideType.class, id );
+
+        return side;
     }
 }

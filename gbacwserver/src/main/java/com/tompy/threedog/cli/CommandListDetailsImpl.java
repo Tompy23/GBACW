@@ -22,18 +22,16 @@ public class CommandListDetailsImpl extends CommandAbstract implements Command
         Game game = gameService.getGameById( gameId );
 
         List< GameLeader > gameLeaders = gameLeaderService.getGameLeaders( gameId );
-        List< Player > players = gamePlayerService.getPlayers( game );
+        List< Player > players = gamePlayerService.getPlayers( gameId );
 
         Player player = playerService.getPlayerById( playerId );
         Player opponent = Util.findOpponent( players, player.getId() );
 
-        SideType playerSide = gamePlayerService.getSide( game, player );
+        SideType playerSide = gamePlayerService.getSide( gameId, playerId );
 
         // details
-        sb.append( player.getName() );
-        sb.append( "\n" );
-        sbO.append( opponent.getName() );
-        sbO.append( "\n" );
+        sb.append( player.getName() + " (" + gamePlayerService.getState( gameId, playerId ).getDescription() + ")\n" );
+        sbO.append( opponent.getName() + " (" + gamePlayerService.getState( gameId, playerId ).getDescription() + ")\n" );
 
         // Get overall for both players
         for ( GameLeader gl : gameLeaders )
@@ -42,7 +40,7 @@ public class CommandListDetailsImpl extends CommandAbstract implements Command
             {
                 if ( gl.getLeader().getSide().getId() == playerSide.getId() )
                 {
-                   leaderDetails( sb, gl, gameLeaders );
+                    leaderDetails( sb, gl, gameLeaders );
                 }
                 else
                 {
@@ -84,14 +82,20 @@ public class CommandListDetailsImpl extends CommandAbstract implements Command
 
     private StringBuilder printLeaderDetails( StringBuilder sb, GameLeader gl, Leader l )
     {
-
-        sb.append( String.format( "%1$-" + l.getRank().getId() + "s", " " ) );
-        sb.append( l.getName() );
+        String indent = String.format( "%1$-" + l.getRank().getId() + "s", " " );
+        sb.append( indent + l.getName() + " (" + l.getId() + ")" );
         sb.append( " - " );
-        sb.append( "Y".equals( gl.getInCommand() ) ? "In" : "Out of" );
-        sb.append( " Command" );
-        sb.append( "\n" );
-
+        sb.append( ( "Y".equals( gl.getInCommand() ) ? "In" : "Out of" ) + " Command\n" );
+        if ( l.getRank().getId() > 1 )
+        {
+            sb.append( indent + " Status: " + gl.getStatus().getDescription() + "\n" );
+            if ( l.getRank().getId() > 3 )
+            {
+                sb.append( indent + " Fatigue: " + gl.getFatigue() + "\n" );
+                sb.append( indent + " Orders: " + gl.getOrders().getDescription() + "\n" );
+            }
+        }
+        sb.append( indent + "--------------------\n" );
         return sb;
     }
 
