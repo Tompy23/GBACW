@@ -37,6 +37,7 @@ public class CommandGiveInitiativeImpl extends CommandAbstract implements Comman
                 if ( side.getId() == oc.getSide().getId() && oc.getInitiativeRating() > 0 && "Y".equals( gl.getInCommand() ) )
                 {
                     log.debug( "Using Commander [" + oc.getName() + ", " + oc.getInitiativeRating() + "]." );
+                    System.out.println( "Overall Commander [" + oc.getName() + ", " + oc.getInitiativeRating() + "]." );
                     for ( TurnEfficiency te : turnService.getTurnEfficiency( turn.getId() ) )
                     {
                         Leader corps = te.getCorps();

@@ -15,7 +15,7 @@ public interface TurnService
 
     public Turn createNextTurn( int gameId );
 
-    public void startCurrentTurn( int gameId, int playerId );
+    public Turn startCurrentTurn( int gameId, int playerId );
 
     public String getDescription( int current );
 

@@ -15,7 +15,7 @@ public class CommandActivateImpl extends CommandAbstract implements Command
         {
             turnService.activateBrigade( turnService.getCurrentTurn( gameId ).getId(), Integer.valueOf( args[ 1 ] ), Integer.valueOf( args[ 2 ] ), args[ 3 ] );
 
-            returnValue = "[" + leaderService.getLeader( Integer.valueOf( args[ 1 ] ) ).getName() + "] activated [" + lookupService.getActivationType( args[ 2 ] ).getDescription() + "].";         
+            returnValue = "[" + leaderService.getLeader( Integer.valueOf( args[ 1 ] ) ).getName() + "] activated [" + lookupService.getActivationType( Integer.valueOf( args[ 2 ])  ).getDescription() + "].";         
         }
 
         return returnValue;

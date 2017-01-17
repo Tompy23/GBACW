@@ -15,6 +15,7 @@ import org.hibernate.annotations.Immutable;
 public class StatusType implements Comparable< StatusType >
 {
     public static final String DEFAULT = "Ok";
+    public static final int STATUS_INEFFECTIVE = 6;
 
     @Id
     @Column( name = "id" )

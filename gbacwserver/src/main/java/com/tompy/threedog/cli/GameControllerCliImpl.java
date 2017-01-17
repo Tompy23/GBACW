@@ -3,6 +3,9 @@ package com.tompy.threedog.cli;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.tompy.threedog.Command;
 import com.tompy.threedog.Constants;
 import com.tompy.threedog.GameController;
@@ -20,9 +23,12 @@ public class GameControllerCliImpl implements GameController
     private boolean play = true;
     private String prompt = "NoGame>";
 
+    private Logger log = LogManager.getLogger( GameControllerCliImpl.class );
+
     @Override
     public int playGame( String[] args )
     {
+        log.info( "Starting game." );
         int returnValue = play();
         scan.close();
 
@@ -32,6 +38,7 @@ public class GameControllerCliImpl implements GameController
     @Override
     public void stop()
     {
+        log.info( "Stopping game." );
         play = false;
     }
 
@@ -41,12 +48,14 @@ public class GameControllerCliImpl implements GameController
 
         if ( login() )
         {
+            log.info( "Login success." );
             while ( play )
             {
                 String commandReturn = parseCommand( getInput( prompt ) );
                 if ( null != commandReturn )
                 {
-                    System.out.println( commandReturn );
+                    System.out.println(  commandReturn );
+                    log.debug( commandReturn );
                     if ( null != game )
                     {
                         prompt = player.getName() + "/" + game.getDescription() + ">";
@@ -78,6 +87,8 @@ public class GameControllerCliImpl implements GameController
         // String password = new String( System.console().readPassword( "Enter
         // Password:" ) );
 
+        log.info( "Attempting to log in as [" + user + "]." );
+
         commandMap.get( "LOGIN" ).doCommand( 0, 0, 0, new String[] { "LOGIN", user } );
 
         return ( null != player );
@@ -87,6 +98,8 @@ public class GameControllerCliImpl implements GameController
     // command.
     private String parseCommand( String command )
     {
+        log.info( "Command: [" + command + "]" );
+
         boolean inQuotes = false;
         byte[] details = command.getBytes();
         for ( int i = 0; i < details.length; i++ )
@@ -104,6 +117,8 @@ public class GameControllerCliImpl implements GameController
                 inQuotes = !inQuotes;
             }
         }
+        
+
 
         String x = new String( details );
         x = x.replaceAll( "\"", "" );

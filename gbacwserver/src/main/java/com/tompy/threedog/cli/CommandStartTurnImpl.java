@@ -4,6 +4,7 @@ import com.tompy.threedog.Command;
 import com.tompy.threedog.CommandAbstract;
 import com.tompy.threedog.Constants;
 import com.tompy.threedog.spring.model.StateType;
+import com.tompy.threedog.spring.model.Turn;
 import com.tompy.threedog.spring.service.TurnService;
 
 public class CommandStartTurnImpl extends CommandAbstract implements Command
@@ -17,7 +18,11 @@ public class CommandStartTurnImpl extends CommandAbstract implements Command
         // Validate
         if ( args.length == 1 && playerState.getId() == Constants.GAME_TURN )
         {
-            turnService.startCurrentTurn( gameId, playerId );
+            Turn turn = turnService.startCurrentTurn( gameId, playerId );
+            if ( null != turn )
+            {
+                returnValue = "Turn [" + turn.getNumber() + ", " + turn.getDescription() + "]";
+            }
         }
 
         return returnValue;

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tompy.threedog.Constants;
@@ -39,6 +41,7 @@ public class TurnServiceImpl implements TurnService
 
     protected final Integer[][] emList = { { 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4 }, { 1, 2, 2, 3, 3, 3, 3, 3, 4, 4 } };
 
+    private Logger log = LogManager.getLogger( TurnServiceImpl.class );
 
     @Override
     @Transactional
@@ -46,7 +49,7 @@ public class TurnServiceImpl implements TurnService
     {
         return turnDAO.getTurnById( id );
     }
-    
+
     @Override
     @Transactional
     public void activateBrigade( int turnId, int brigadeId, int typeId, String notes )
@@ -198,7 +201,7 @@ public class TurnServiceImpl implements TurnService
 
     @Override
     @Transactional
-    public void startCurrentTurn( int gameId, int playerId )
+    public Turn startCurrentTurn( int gameId, int playerId )
     {
         Game game = gameService.getGameById( gameId );
         SideType sideType = gamePlayerService.getSide( gameId, playerId );
@@ -220,8 +223,10 @@ public class TurnServiceImpl implements TurnService
             turnDAO.saveTurn( currentTurn );
 
             gamePlayerService.setState( gameId, playerId, Constants.GAME_STARTTURN );
+            log.info( "Turn [" + currentTurn.getNumber() + ", " + currentTurn.getDescription() + "]" );
         } // null != currentTurn
 
+        return currentTurn;
     }
 
     private TurnInitiative buildTurnDetails( Game game, Turn currentTurn, int side )
@@ -267,8 +272,10 @@ public class TurnServiceImpl implements TurnService
 
         for ( TurnEfficiency efficiency : efficiencies )
         {
+            log.debug( "Current pool: [" + emPool.toString() + "]." );
             int em = Util.randomInt( 0, emPool.size() );
             efficiency.setEfficiencyValue( emPool.get( em ) );
+            log.info( "Assign EM [" + emPool.get( em ) + "] to [" + efficiency.getCorps().getName() + "]." );
             emPool.remove( em );
         }
 
@@ -389,6 +396,8 @@ public class TurnServiceImpl implements TurnService
         int mySideInit = 0;
         int otherSideInit = 0;
 
+        log.info( "Rolling initiative for [" + myInitiative.getOverall().getName() + "]" );
+
         // Do something different on the first turn...
         if ( currentNumber > 1 )
         {
@@ -407,6 +416,7 @@ public class TurnServiceImpl implements TurnService
                     }
                 } // looping through initiatives.
             } // looping through turns.
+            log.info( "Previous turn Initiatives: [" + mySideInit + ", " + otherSideInit + "]" );
         } // skip on first turn
 
         calculateInitiative( ( mySideInit > otherSideInit ? 1 : 0 ), currentNumber, myInitiative, game );
@@ -418,12 +428,15 @@ public class TurnServiceImpl implements TurnService
         // Roll Initiative
         Random rand = new Random( System.currentTimeMillis() );
         int finalInitValue = rand.nextInt( 9 ) + lastTurnModifier;
+        log.info( "Die roll: [" + finalInitValue + "]" );
 
         if ( myInit.getOverall().getTurnOfEntry() > currentNumber &&
                 gameLeaderService.getGameLeader( game.getId(), myInit.getOverall().getId() ).getInCommand().equals( "Y" ) )
         {
             finalInitValue += myInit.getOverall().getInitiativeRating();
         }
+
+        log.info( "Initiative Value: [" + finalInitValue + "]" );
 
         myInit.setInitiativeValue( finalInitValue );
     }
@@ -476,6 +489,5 @@ public class TurnServiceImpl implements TurnService
     {
         this.lookupService = lookupService;
     }
-
 
 }

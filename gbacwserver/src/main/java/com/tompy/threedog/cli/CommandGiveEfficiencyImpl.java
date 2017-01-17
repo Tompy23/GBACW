@@ -10,6 +10,7 @@ import com.tompy.threedog.spring.model.GameLeader;
 import com.tompy.threedog.spring.model.Leader;
 import com.tompy.threedog.spring.model.SideType;
 import com.tompy.threedog.spring.model.StateType;
+import com.tompy.threedog.spring.model.StatusType;
 import com.tompy.threedog.spring.model.Turn;
 import com.tompy.threedog.spring.model.TurnActivation;
 import com.tompy.threedog.spring.model.TurnEfficiency;
@@ -21,6 +22,7 @@ public class CommandGiveEfficiencyImpl extends CommandAbstract implements Comman
     @Override
     public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
+        log.info( "Giving Efficiency." );
         String returnValue = "Give Efficiency Bonus failed.";
 
         StateType state = gamePlayerService.getState( gameId, playerId );
@@ -38,6 +40,8 @@ public class CommandGiveEfficiencyImpl extends CommandAbstract implements Comman
                 GameLeader glc = gameLeaderService.getGameLeader( gameId, corps.getId() );
                 if ( side.getId() == corps.getSide().getId() && corps.getEfficiencyRating() > 0 && "Y".equals( glc.getInCommand() ) )
                 {
+                    log.debug( "Corps Commander [" + corps.getName() + "] (" + corps.getEfficiencyRating() + ")" );
+                    System.out.println( "Corps Commander [" + corps.getName() + "] (" + corps.getEfficiencyRating() + ")" );
                     for ( int i = 0; i < corps.getEfficiencyRating(); i++ )
                     {
                         for ( TurnActivation ta : turnService.getTurnActivation( turn.getId() ) )
@@ -88,8 +92,29 @@ public class CommandGiveEfficiencyImpl extends CommandAbstract implements Comman
                         {
                             if ( sub.getId().intValue() == division.getId().intValue() )
                             {
-                                log.debug( "Adding Activation [" + ( division.getActivationRating() + te.getEfficiencyValue() ) + "]." );
-                                turnService.setDivisionActivation( turn.getId(), division.getId(), division.getActivationRating() + te.getEfficiencyValue() );
+                                int activations = te.getEfficiencyValue();
+
+                                if ( "Y".equals( gameLeaderService.getCommand( gameId, corps.getId() ) ) )
+                                {
+                                    if ( corps.getEfficiencyRating() < 0 )
+                                    {
+                                        activations += corps.getEfficiencyRating();
+                                    }
+                                }
+
+                                if ( "N".equals( gameLeaderService.getCommand( gameId, division.getId() ) ) )
+                                {
+                                    activations -= 1;
+                                }
+
+                                if ( gameLeaderService.getStatus( gameId, division.getId() ).getId() == StatusType.STATUS_INEFFECTIVE )
+                                {
+                                    activations -= 1;
+                                }
+                                activations += division.getActivationRating();
+                                activations = ( activations < 1 ? 1 : ( activations > 4 ? 4 : activations ) );
+                                turnService.setDivisionActivation( turn.getId(), division.getId(), activations );
+                                log.debug( "Adding Activation [" + activations + "]." );
                                 break;
                             }
                         } // sub leaders

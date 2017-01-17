@@ -4,14 +4,16 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
+		<File name="ServerLog" filename="/home/jeff/workspace/GBACW/server.log">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %level{length=3} %logger{1} - %msg%n" />
+		</File>
 	</Appenders>
 	<Loggers>
 		<Root level="INFO">
 			<AppenderRef ref="Console" />
 		</Root>
 		<Logger name="com.tompy" level="DEBUG" additivity="false">
-			<AppenderRef ref="Console" />
+			<AppenderRef ref="ServerLog" />
 		</Logger>
-
 	</Loggers>
 </Configuration>
