@@ -19,7 +19,7 @@ public class CommandGiveInitiativeImpl extends CommandAbstract implements Comman
     Logger log = LogManager.getLogger( CommandGiveInitiativeImpl.class );
 
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         String returnValue = "Give Initiative Bonus failed.";
         log.info( "Giving Initiative." );
@@ -54,7 +54,7 @@ public class CommandGiveInitiativeImpl extends CommandAbstract implements Comman
 
             } // Turn initiative
 
-            gamePlayerService.setState( gameId, playerId, lookupService.getStateType( Constants.GAME_STARTTURN_INITIATIVE ) );
+            gamePlayerService.setState( gameId, playerId, Constants.GAME_STARTTURN_INITIATIVE );
             returnValue = "Give Initiative Bonus success.";
         }
         else

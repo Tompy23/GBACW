@@ -14,6 +14,8 @@ public interface GameController
     public void setPlayer( Player player );
 
     public Player getPlayer();
+    
+    public void setOpponent( Player opponent );
 
     public void stop();
 

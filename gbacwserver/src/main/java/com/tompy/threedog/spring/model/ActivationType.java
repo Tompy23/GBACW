@@ -12,7 +12,7 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table( name = "activation_type" )
-public class ActivationType
+public class ActivationType implements Comparable< ActivationType >
 {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -20,6 +20,12 @@ public class ActivationType
 
     @Column( name = "description" )
     private String description;
+
+    @Override
+    public int compareTo( ActivationType o )
+    {
+        return this.id - o.getId();
+    }
 
     public String getDescription()
     {

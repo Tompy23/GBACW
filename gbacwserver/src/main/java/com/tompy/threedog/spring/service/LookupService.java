@@ -1,5 +1,6 @@
 package com.tompy.threedog.spring.service;
 
+import com.tompy.threedog.spring.model.ActivationType;
 import com.tompy.threedog.spring.model.OrdersType;
 import com.tompy.threedog.spring.model.SideType;
 import com.tompy.threedog.spring.model.StateType;
@@ -15,6 +16,8 @@ public interface LookupService
 
     public StateType getStateType( String name );
 
+    public ActivationType getActivationType( String name );
+
     public SideType getSideType( int id );
 
     public StatusType getStatusType( int id );
@@ -22,4 +25,6 @@ public interface LookupService
     public OrdersType getOrdersType( int id );
 
     public StateType getStateType( int id );
+
+    public ActivationType getActivationType( int id );
 }

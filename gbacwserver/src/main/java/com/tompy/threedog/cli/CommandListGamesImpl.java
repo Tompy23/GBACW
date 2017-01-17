@@ -13,7 +13,7 @@ import com.tompy.threedog.spring.model.SideType;
 public class CommandListGamesImpl extends CommandAbstract implements Command
 {
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         SideType union = lookupService.getSideType( "USA" );
         SideType confederate = lookupService.getSideType( "CSA" );

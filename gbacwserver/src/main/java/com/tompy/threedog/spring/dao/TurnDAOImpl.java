@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.tompy.threedog.spring.model.Game;
 import com.tompy.threedog.spring.model.Turn;
 import com.tompy.threedog.spring.model.TurnAMPool;
 import com.tompy.threedog.spring.model.TurnActivation;
@@ -52,6 +51,7 @@ public class TurnDAOImpl implements TurnDAO
         return returnValue;
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public List< TurnEfficiency > getTurnEfficiency( int turnId )
     {
@@ -64,6 +64,7 @@ public class TurnDAOImpl implements TurnDAO
         return returnValue;
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public List< TurnActivation > getTurnActivation( int turnId )
     {
@@ -76,6 +77,7 @@ public class TurnDAOImpl implements TurnDAO
         return returnValue;
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public List< TurnAMPool > getTurnAMPool( int turnId )
     {
@@ -86,12 +88,5 @@ public class TurnDAOImpl implements TurnDAO
         returnValue = (List< TurnAMPool >) session.createQuery( "from TurnAMPool where turnId = :turn" ).setParameter( "turn", turnId ).list();
 
         return returnValue;
-    }
-
-    @Override
-    public void setDivisionActivation( int turnId, int divisionId, int count )
-    {
-        // TODO Auto-generated method stub
-        
     }
 }

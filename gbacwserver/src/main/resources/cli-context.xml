@@ -110,11 +110,11 @@
 	<beans:bean id="turnService"
 		class="com.tompy.threedog.spring.service.TurnServiceImpl">
 		<beans:property name="turnDAO" ref="turnDAO" />
-		<beans:property name="leaderService" ref="leaderService" />
-		<beans:property name="playerService" ref="playerService" />
 		<beans:property name="gameService" ref="gameService" />
-		<beans:property name="lookupService" ref="lookupService" />
 		<beans:property name="gamePlayerService" ref="gamePlayerService" />
+		<beans:property name="gameLeaderService" ref="gameLeaderService" />
+		<beans:property name="leaderService" ref="leaderService" />
+		<beans:property name="lookupService" ref="lookupService" />
 	</beans:bean>
 
 	<beans:bean id="turnDAO" class="com.tompy.threedog.spring.dao.TurnDAOImpl">
@@ -124,6 +124,7 @@
 	<beans:bean id="gamePlayerService"
 		class="com.tompy.threedog.spring.service.GamePlayerServiceImpl">
 		<beans:property name="gamePlayerDAO" ref="gamePlayerDAO" />
+		<beans:property name="lookupService" ref="lookupService" />
 	</beans:bean>
 
 	<beans:bean id="gamePlayerDAO"
@@ -176,12 +177,19 @@
 		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
 	</beans:bean>
 
+	<beans:bean id="activationTypeDAO"
+		class="com.tompy.threedog.spring.dao.ActivationTypeDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernateAnnotatedSessionFactory" />
+	</beans:bean>
+
+
 	<beans:bean id="lookupService"
 		class="com.tompy.threedog.spring.service.LookupServiceImpl">
 		<beans:property name="sideTypeDAO" ref="sideTypeDAO" />
 		<beans:property name="ordersTypeDAO" ref="ordersTypeDAO" />
 		<beans:property name="stateTypeDAO" ref="stateTypeDAO" />
 		<beans:property name="statusTypeDAO" ref="statusTypeDAO" />
+		<beans:property name="activationTypeDAO" ref="activationTypeDAO" />
 	</beans:bean>
 
 	<beans:bean id="commandStartGame" class="com.tompy.threedog.cli.CommandNewGameImpl"
@@ -210,6 +218,18 @@
 		class="com.tompy.threedog.cli.CommandGiveInitiativeImpl" parent="basicCommand" />
 	<beans:bean id="commandGiveEfficiency"
 		class="com.tompy.threedog.cli.CommandGiveEfficiencyImpl" parent="basicCommand" />
+	<beans:bean id="commandStartActivation"
+		class="com.tompy.threedog.cli.CommandStartActivationImpl" parent="basicCommand" />
+	<beans:bean id="commandAddNotes"
+		class="com.tompy.threedog.cli.CommandAddNotesImpl" parent="basicCommand" />
+	<beans:bean id="commandClearNotes"
+		class="com.tompy.threedog.cli.CommandClearNotesImpl" parent="basicCommand" />
+	<beans:bean id="commandActivate"
+		class="com.tompy.threedog.cli.CommandActivateImpl" parent="basicCommand" />
+	<beans:bean id="commandNextAM"
+		class="com.tompy.threedog.cli.CommandNextAMImpl" parent="basicCommand" />
+	<beans:bean id="commandEndTurn"
+		class="com.tompy.threedog.cli.CommandEndTurnImpl" parent="basicCommand" />
 
 	<util:map id="commands">
 		<beans:entry key="GAMESTART" value-ref="commandStartGame" />
@@ -219,6 +239,12 @@
 		<beans:entry key="STARTTURN" value-ref="commandStartTurn" />
 		<beans:entry key="GIVEINITIATIVE" value-ref="commandGiveInitiative" />
 		<beans:entry key="GIVEEFFICIENCY" value-ref="commandGiveEfficiency" />
+		<beans:entry key="STARTACTIVATION" value-ref="commandStartActivation" />
+		<beans:entry key="ADDNOTES" value-ref="commandAddNotes" />
+		<beans:entry key="CLEARNOTES" value-ref="commandClearNotes" />
+		<beans:entry key="ACTIVATE" value-ref="commandActivate" />
+		<beans:entry key="NEXTAM" value-ref="commandNextAM" />
+		<beans:entry key="ENDTURN" value-ref="commandEndTurn" />
 		<beans:entry key="SETCOMMAND" value-ref="commandSetCommand" />
 		<beans:entry key="SETFATIGUE" value-ref="commandSetFatigue" />
 		<beans:entry key="SETORDERS" value-ref="commandSetOrders" />

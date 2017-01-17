@@ -12,10 +12,10 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table( name = "orders_type" )
-public class OrdersType
+public class OrdersType implements Comparable< OrdersType >
 {
     public static final String DEFAULT = "March";
-    
+
     @Id
     @Column( name = "id" )
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -23,6 +23,12 @@ public class OrdersType
 
     @Column( name = "description" )
     private String description;
+
+    @Override
+    public int compareTo( OrdersType o )
+    {
+        return this.id - o.getId();
+    }
 
     public String getDescription()
     {

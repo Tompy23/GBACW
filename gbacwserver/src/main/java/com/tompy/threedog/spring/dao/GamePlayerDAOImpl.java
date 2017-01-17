@@ -125,4 +125,24 @@ public class GamePlayerDAOImpl implements GamePlayerDAO
 
     }
 
+    @Override
+    public Player getPlayerBySide( int gameId, int sideId )
+    {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        Player returnValue = null;
+
+        @SuppressWarnings( "unchecked" )
+        List< GamePlayer > gamePlayers =
+                (List< GamePlayer >) session.createQuery( "from GamePlayer where gameId = :game and sideId = :side" ).setParameter( "game", gameId )
+                        .setParameter( "side", sideId ).list();
+
+        if ( null != gamePlayers )
+        {
+            returnValue = gamePlayers.get( 0 ).getPlayer();
+        }
+
+        return returnValue;
+    }
+
 }

@@ -21,6 +21,7 @@ public class LeaderDAOImpl implements LeaderDAO
     {
         Session session = sessionFactory.getCurrentSession();
 
+        @SuppressWarnings( "unchecked" )
         List< Leader > leaders = (List< Leader >) session.createQuery( "from Leader" ).list();
 
         return leaders;

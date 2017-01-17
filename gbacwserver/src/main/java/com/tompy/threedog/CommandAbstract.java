@@ -20,7 +20,7 @@ public abstract class CommandAbstract implements Command
     protected GameController controller;
 
     @Override
-    public String undoCommand( int gameId, int playerId, String[] args )
+    public String undoCommand()
     {
         // TODO Auto-generated method stub
         return null;

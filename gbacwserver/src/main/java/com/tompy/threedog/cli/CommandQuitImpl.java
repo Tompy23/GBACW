@@ -7,7 +7,7 @@ public class CommandQuitImpl extends CommandAbstract implements Command
 {
 
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         controller.stop();
         return "Terminating application";

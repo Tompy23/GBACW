@@ -36,7 +36,7 @@ public class GameServiceImpl implements GameService
 
         Game game = new Game();
         game.setDescription( description );
-        game.setCurrentTurn( 1 );
+        game.setCurrentTurn( 0 );
 
         game.addGamePlayer( new GamePlayer( game, unionPlayer, lookupService.getSideType( SideType.DEFAULT_USA ), lookupService.getStateType( StateType.DEFAULT ) ) );
         game.addGamePlayer( new GamePlayer( game, confederatePlayer, lookupService.getSideType( SideType.DEFAULT_CSA ), lookupService.getStateType( StateType.DEFAULT ) ) );
@@ -62,10 +62,12 @@ public class GameServiceImpl implements GameService
 
     @Override
     @Transactional
-    public Game addNextTurn( Turn turn )
+    public void addNextTurn( int gameId, int turnId )
     {
-        // TODO Auto-generated method stub
-        return null;
+        Game game = getGameById( gameId );
+        game.addTurn( turnService.getTurnById( turnId ) );
+
+        gameDAO.saveGame( game );
     }
 
     @Override
@@ -73,24 +75,6 @@ public class GameServiceImpl implements GameService
     public Game getGameById( int gameId )
     {
         return gameDAO.getGameById( gameId );
-    }
-
-    @Override
-    @Transactional
-    public GameLeader getLeaderInfo( Game game, Leader leader )
-    {
-        GameLeader returnValue = null;
-
-        for ( GameLeader gl : game.getGameLeaders() )
-        {
-            if ( gl.getLeader().getId() == leader.getId() )
-            {
-                returnValue = gl;
-                break;
-            }
-        }
-
-        return returnValue;
     }
 
     public void setGameDAO( GameDAO gameDAO )

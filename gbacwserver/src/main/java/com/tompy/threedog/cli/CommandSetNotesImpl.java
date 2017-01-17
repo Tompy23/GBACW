@@ -7,7 +7,7 @@ public class CommandSetNotesImpl extends CommandAbstract implements Command
 {
 
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         // TODO Auto-generated method stub
         return null;

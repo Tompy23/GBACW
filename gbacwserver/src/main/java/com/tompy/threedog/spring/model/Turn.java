@@ -17,13 +17,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table( name = "turn" )
-public class Turn
+public class Turn implements Comparable< Turn >
 {
     @Id
     @Column( name = "id" )
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int id;
- 
+
     @OneToMany( mappedBy = "turn", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Set< TurnAMPool > amPool = new HashSet< TurnAMPool >();
 
@@ -45,6 +45,19 @@ public class Turn
 
     @Column( name = "description" )
     private String description;
+
+    @Override
+    public int compareTo( Turn o )
+    {
+        return ( this.game.getId() == o.getGame().getId() ? this.number - o.getNumber() : 1 );
+    }
+
+    public TurnAMPool addAM( TurnAMPool am )
+    {
+        amPool.add( am );
+
+        return am;
+    }
 
     public int getId()
     {
@@ -125,4 +138,5 @@ public class Turn
     {
         this.initiative = initiative;
     }
+
 }

@@ -19,7 +19,7 @@ public class CommandGiveEfficiencyImpl extends CommandAbstract implements Comman
     Logger log = LogManager.getLogger( CommandGiveEfficiencyImpl.class );
 
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         String returnValue = "Give Efficiency Bonus failed.";
 
@@ -56,14 +56,14 @@ public class CommandGiveEfficiencyImpl extends CommandAbstract implements Comman
                 } // Corps is eligible
             } // Turn Efficiency
 
-            gamePlayerService.setState( gameId, playerId, lookupService.getStateType( Constants.GAME_ACTIVATION ) );
+            gamePlayerService.setState( gameId, playerId, Constants.GAME_ACTIVATION );
             returnValue = "Give Efficiency Bonus Success.";
         }
         else
         {
             returnValue = "Must have state: GAME_STARTTURN_INITIATIVE";
         }
-        
+
         return returnValue;
     }
 

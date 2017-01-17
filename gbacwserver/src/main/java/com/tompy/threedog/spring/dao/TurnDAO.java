@@ -22,5 +22,4 @@ public interface TurnDAO
 
     public List< TurnAMPool > getTurnAMPool( int turnId );
 
-    public void setDivisionActivation( int turnId, int divisionId, int count );
 }

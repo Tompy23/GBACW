@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table( name = "player" )
-public class Player
+public class Player implements Comparable< Player >
 {
     @Id
     @Column( name = "id" )
@@ -26,6 +26,12 @@ public class Player
 
     @OneToMany( mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Set< GamePlayer > gamePlayers;
+
+    @Override
+    public int compareTo( Player o )
+    {
+        return this.id - o.getId();
+    }
 
     public int getId()
     {

@@ -14,6 +14,12 @@ import com.tompy.threedog.spring.model.StateType;
 public class GamePlayerServiceImpl implements GamePlayerService
 {
     private GamePlayerDAO gamePlayerDAO;
+    private LookupService lookupService;
+
+    public void setLookupService( LookupService lookupService )
+    {
+        this.lookupService = lookupService;
+    }
 
     @Override
     @Transactional
@@ -28,7 +34,7 @@ public class GamePlayerServiceImpl implements GamePlayerService
     {
         return gamePlayerDAO.getState( gameId, playerId );
     }
-    
+
     @Override
     @Transactional
     public List< Game > getGamesBySide( int playerId, int sideId )
@@ -45,20 +51,26 @@ public class GamePlayerServiceImpl implements GamePlayerService
 
     @Override
     @Transactional
-    public void setState( int gameId, int playerId, StateType s )
+    public void setState( int gameId, int playerId, int stateId )
     {
         GamePlayer gp = gamePlayerDAO.getGamePlayer( gameId, playerId );
 
-        gp.setState( s );
+        gp.setState( lookupService.getStateType( stateId ) );
 
         gamePlayerDAO.saveGamePlayer( gp );
+    }
+
+    @Override
+    @Transactional
+    public Player getPlayerBySide( int gameId, int sideId )
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public void setGamePlayerDAO( GamePlayerDAO gamePlayerDAO )
     {
         this.gamePlayerDAO = gamePlayerDAO;
     }
-
-
 
 }

@@ -13,16 +13,24 @@ import javax.persistence.Table;
 @Table( name = "activation_brigade" )
 public class ActivationBrigade implements Serializable
 {
-/**
+    /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-    //    @Id
-//    @Column( name = "id" )
-//    @GeneratedValue( strategy = GenerationType.IDENTITY )
-//    private int id;
-//
+    public ActivationBrigade()
+    {
+
+    }
+
+    public ActivationBrigade( TurnAMPool am, Leader brigade, ActivationType type, String notes )
+    {
+        this.am = am;
+        this.brigade = brigade;
+        this.type = type;
+        this.notes = notes;
+    }
+
     @Id
     @ManyToOne
     @JoinColumn( name = "amId" )

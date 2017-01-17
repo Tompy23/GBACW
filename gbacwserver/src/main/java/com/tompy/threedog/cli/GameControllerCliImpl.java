@@ -8,7 +8,6 @@ import com.tompy.threedog.Constants;
 import com.tompy.threedog.GameController;
 import com.tompy.threedog.spring.model.Game;
 import com.tompy.threedog.spring.model.Player;
-import com.tompy.threedog.spring.model.SideType;
 
 public class GameControllerCliImpl implements GameController
 {
@@ -16,7 +15,8 @@ public class GameControllerCliImpl implements GameController
     private Map< String, Command > commandMap = null;
     private Game game = null;
     private Player player = null;
-    private SideType side = null;
+    private Player opponent = null;
+
     private boolean play = true;
     private String prompt = "NoGame>";
 
@@ -78,7 +78,7 @@ public class GameControllerCliImpl implements GameController
         // String password = new String( System.console().readPassword( "Enter
         // Password:" ) );
 
-        commandMap.get( "LOGIN" ).doCommand( 0, 0, new String[] { "LOGIN", user } );
+        commandMap.get( "LOGIN" ).doCommand( 0, 0, 0, new String[] { "LOGIN", user } );
 
         return ( null != player );
     }
@@ -87,7 +87,27 @@ public class GameControllerCliImpl implements GameController
     // command.
     private String parseCommand( String command )
     {
-        String[] commandList = command.split( " " );
+        boolean inQuotes = false;
+        byte[] details = command.getBytes();
+        for ( int i = 0; i < details.length; i++ )
+        {
+            if ( !inQuotes )
+            {
+                if ( details[ i ] == ' ' )
+                {
+                    details[ i ] = ':';
+                }
+            }
+
+            if ( details[ i ] == '\"' )
+            {
+                inQuotes = !inQuotes;
+            }
+        }
+
+        String x = new String( details );
+        x = x.replaceAll( "\"", "" );
+        String[] commandList = x.split( ":" );
         String key = null;
 
         switch ( commandList[ 0 ].toUpperCase() )
@@ -119,7 +139,6 @@ public class GameControllerCliImpl implements GameController
                 key = "GAMELIST";
                 break;
 
-            // TODO
             // This loads the Turn Init/Eff/Activation tables for that player
             // Rolls Initiative (modifies by previous turn and in-command OC)
             // Distributes EM (from pool)
@@ -147,7 +166,6 @@ public class GameControllerCliImpl implements GameController
                 key = "GIVEEFFICIENCY";
                 break;
 
-            // TODO
             // Calculates the AM for each Division based on previous commands
             // Populates the Turn Activation
             // Populates Turn AM Pool
@@ -159,9 +177,9 @@ public class GameControllerCliImpl implements GameController
             // TUA <Division AM Leader ID to start>
             // Status: TURN_ACTIVATION_TMP | TURN_ACTIVATION
             // (TURN_STARTED | TURN_ACTIVATION_TMP)
-            case "TURNACTIVATION":
-            case "TUA":
-                key = "TURNACTIVATION";
+            case "STARTACTIVATION":
+            case "SAC":
+                key = "STARTACTIVATION";
                 break;
 
             // TODO
@@ -177,7 +195,6 @@ public class GameControllerCliImpl implements GameController
                 key = "ENDTURN";
                 break;
 
-            // TODO
             // Marks the current AM as "picked"
             // Displays the next AM and marks it as "current"
             // (TURN_ACTIVATION)
@@ -218,14 +235,18 @@ public class GameControllerCliImpl implements GameController
                 key = "SETFATIGUE";
                 break;
 
-            // TODO
             // (> NOTHING)
             case "ADDNOTES":
             case "ANO":
                 key = "ADDNOTES";
                 break;
 
-            // TODO
+            // (> NOTHING)
+            case "CLEARNOTES":
+            case "CNO":
+                key = "CLEARNOTES";
+                break;
+
             // ACT <Brigade ID> <Type> <Notes>
             // (TURN_ACTIVATION)
             case "ACTIVATE":
@@ -234,7 +255,8 @@ public class GameControllerCliImpl implements GameController
                 break;
         }
 
-        return ( null != key ? commandMap.get( key ).doCommand( ( null != game ) ? game.getId() : 0, ( null != player ) ? player.getId() : 0, commandList ) : "Bad command" );
+        return ( null != key ? commandMap.get( key ).doCommand( ( null != game ) ? game.getId() : 0, ( null != player ) ? player.getId() : 0,
+                ( null != opponent ) ? opponent.getId() : 0, commandList ) : "Bad command" );
 
     }
 
@@ -281,18 +303,13 @@ public class GameControllerCliImpl implements GameController
         return player;
     }
 
-    public SideType getSide()
-    {
-        return side;
-    }
-
-    public void setSide( SideType side )
-    {
-        this.side = side;
-    }
-
     public void setPlayer( Player player )
     {
         this.player = player;
+    }
+
+    public void setOpponent( Player opponent )
+    {
+        this.opponent = opponent;
     }
 }

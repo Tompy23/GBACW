@@ -18,29 +18,11 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table( name = "leader" )
-public class Leader
+public class Leader implements Comparable< Leader >
 {
     @Id
     @Column( name = "id" )
     private Integer id;
-
-//    @OneToMany( mappedBy = "leaders" )
-//    private Set< GameLeader > gameLeaders;
-//
-//    @OneToMany( mappedBy = "brigade" )
-//    private Set< ActivationBrigade > brigadeActivations = new HashSet< ActivationBrigade >();
-//
-//    @OneToMany( mappedBy = "division" )
-//    private Set< TurnActivation > disivionActivations = new HashSet< TurnActivation >();
-//
-//    @OneToMany( mappedBy = "divisionAM" )
-//    private Set< TurnAMPool > divisionAM = new HashSet< TurnAMPool >();
-//
-//    @OneToMany( mappedBy = "corps" )
-//    private Set< TurnEfficiency > corpsEfficiencies = new HashSet< TurnEfficiency >();
-//
-//    @OneToMany( mappedBy = "overall" )
-//    private Set< TurnInitiative > OverallInitiatives = new HashSet< TurnInitiative >();
 
     @ManyToOne
     @JoinColumn( name = "sideId" )
@@ -93,6 +75,13 @@ public class Leader
     @Column( name = "imageNameAM" )
     private String imageAM;
 
+    @Override
+    public int compareTo( Leader o )
+    {
+        // TODO Auto-generated method stub
+        return this.id - o.getId();
+    }
+
     public Integer getId()
     {
         return id;
@@ -102,46 +91,6 @@ public class Leader
     {
         this.id = id;
     }
-
-//    public Set< ActivationBrigade > getBrigadeActivations()
-//    {
-//        return brigadeActivations;
-//    }
-//
-//    public void setBrigadeActivations( Set< ActivationBrigade > brigadeActivations )
-//    {
-//        this.brigadeActivations = brigadeActivations;
-//    }
-//
-//    public Set< TurnActivation > getDisivionActivations()
-//    {
-//        return disivionActivations;
-//    }
-//
-//    public void setDisivionActivations( Set< TurnActivation > disivionActivations )
-//    {
-//        this.disivionActivations = disivionActivations;
-//    }
-//
-//    public Set< TurnEfficiency > getCorpsEfficiencies()
-//    {
-//        return corpsEfficiencies;
-//    }
-//
-//    public void setCorpsEfficiencies( Set< TurnEfficiency > corpsEfficiencies )
-//    {
-//        this.corpsEfficiencies = corpsEfficiencies;
-//    }
-
-//    public Set< TurnInitiative > getOverallInitiatives()
-//    {
-//        return OverallInitiatives;
-//    }
-//
-//    public void setOverallInitiatives( Set< TurnInitiative > overallInitiatives )
-//    {
-//        OverallInitiatives = overallInitiatives;
-//    }
 
     public SideType getSide()
     {
@@ -302,25 +251,25 @@ public class Leader
     {
         this.imageAM = imageAM;
     }
-//
-//    public Set< TurnAMPool > getDivisionAM()
-//    {
-//        return divisionAM;
-//    }
-//
-//    public void setDivisionAM( Set< TurnAMPool > divisionAM )
-//    {
-//        this.divisionAM = divisionAM;
-//    }
-//
-//    public Set< GameLeader > getGameLeaders()
-//    {
-//        return gameLeaders;
-//    }
-//
-//    public void setGameLeaders( Set< GameLeader > gameLeaders )
-//    {
-//        this.gameLeaders = gameLeaders;
-//    }
+    //
+    // public Set< TurnAMPool > getDivisionAM()
+    // {
+    // return divisionAM;
+    // }
+    //
+    // public void setDivisionAM( Set< TurnAMPool > divisionAM )
+    // {
+    // this.divisionAM = divisionAM;
+    // }
+    //
+    // public Set< GameLeader > getGameLeaders()
+    // {
+    // return gameLeaders;
+    // }
+    //
+    // public void setGameLeaders( Set< GameLeader > gameLeaders )
+    // {
+    // this.gameLeaders = gameLeaders;
+    // }
 
 }

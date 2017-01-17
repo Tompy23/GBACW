@@ -2,10 +2,12 @@ package com.tompy.threedog.spring.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tompy.threedog.spring.dao.ActivationTypeDAO;
 import com.tompy.threedog.spring.dao.OrdersTypeDAO;
 import com.tompy.threedog.spring.dao.SideTypeDAO;
 import com.tompy.threedog.spring.dao.StateTypeDAO;
 import com.tompy.threedog.spring.dao.StatusTypeDAO;
+import com.tompy.threedog.spring.model.ActivationType;
 import com.tompy.threedog.spring.model.OrdersType;
 import com.tompy.threedog.spring.model.SideType;
 import com.tompy.threedog.spring.model.StateType;
@@ -17,6 +19,7 @@ public class LookupServiceImpl implements LookupService
     private OrdersTypeDAO ordersTypeDAO;
     private StatusTypeDAO statusTypeDAO;
     private StateTypeDAO stateTypeDAO;
+    private ActivationTypeDAO activationTypeDAO;
 
     @Override
     @Transactional
@@ -72,7 +75,20 @@ public class LookupServiceImpl implements LookupService
     public StateType getStateType( int id )
     {
         return stateTypeDAO.getStateType( id );
-        //return null;
+    }
+
+    @Override
+    @Transactional
+    public ActivationType getActivationType( String name )
+    {
+       return activationTypeDAO.getActivation( name );
+    }
+
+    @Override
+    @Transactional
+    public ActivationType getActivationType( int id )
+    {
+         return activationTypeDAO.getActivation( id );
     }
 
     public void setSideTypeDAO( SideTypeDAO sideTypeDAO )
@@ -93,6 +109,11 @@ public class LookupServiceImpl implements LookupService
     public void setStateTypeDAO( StateTypeDAO stateTypeDAO )
     {
         this.stateTypeDAO = stateTypeDAO;
+    }
+
+    public void setActivationTypeDAO( ActivationTypeDAO activationTypeDAO )
+    {
+        this.activationTypeDAO = activationTypeDAO;
     }
 
 }

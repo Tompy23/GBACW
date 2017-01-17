@@ -19,12 +19,23 @@ import javax.persistence.Table;
 @Table( name = "turn_ampool" )
 public class TurnAMPool
 {
+    public TurnAMPool()
+    {
+    }
+
+    public TurnAMPool( Turn t, Leader l )
+    {
+        turn = t;
+        divisionAM = l;
+        picked = "N";
+    }
+
     @Id
     @Column( name = "id" )
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int id;
 
-    @OneToMany( mappedBy = "am", fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+    @OneToMany( mappedBy = "am", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Set< ActivationBrigade > activations = new HashSet< ActivationBrigade >();
 
     @ManyToOne
@@ -41,6 +52,13 @@ public class TurnAMPool
     // "P" - Picked and completed
     @Column( name = "picked" )
     private String picked;
+
+    public ActivationBrigade addActivation( ActivationBrigade ab )
+    {
+        activations.add( ab );
+
+        return ab;
+    }
 
     public int getId()
     {

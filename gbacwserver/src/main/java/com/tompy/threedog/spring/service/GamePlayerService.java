@@ -17,5 +17,7 @@ public interface GamePlayerService
 
     public List< Player > getPlayers( int gameId );
 
-    public void setState( int gameId, int playerId, StateType s );
+    public Player getPlayerBySide( int gameId, int sideId );
+
+    public void setState( int gameId, int playerId, int stateId );
 }

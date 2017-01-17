@@ -17,6 +17,8 @@ public interface GamePlayerDAO
     public List< Game > getGames( int playerId, int sideId );
 
     public List< Player > getPlayers( int gameId );
+    
+    public Player getPlayerBySide( int gameId, int sideId );
 
     public void setSide( int gameId, int playerId, String s );
     

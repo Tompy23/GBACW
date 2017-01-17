@@ -12,7 +12,7 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table( name = "side_type" )
-public class SideType
+public class SideType implements Comparable< SideType >
 {
     public static final String DEFAULT_CSA = "CSA";
     public static final String DEFAULT_USA = "USA";
@@ -24,6 +24,12 @@ public class SideType
 
     @Column( name = "description" )
     private String description;
+
+    @Override
+    public int compareTo( SideType o )
+    {
+        return this.id - o.getId();
+    }
 
     public String getDescription()
     {

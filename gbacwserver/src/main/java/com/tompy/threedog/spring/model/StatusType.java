@@ -12,7 +12,7 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table( name = "status_type" )
-public class StatusType
+public class StatusType implements Comparable< StatusType >
 {
     public static final String DEFAULT = "Ok";
 
@@ -23,6 +23,12 @@ public class StatusType
 
     @Column( name = "description" )
     private String description;
+
+    @Override
+    public int compareTo( StatusType o )
+    {
+        return this.id - o.getId();
+    }
 
     public String getDescription()
     {

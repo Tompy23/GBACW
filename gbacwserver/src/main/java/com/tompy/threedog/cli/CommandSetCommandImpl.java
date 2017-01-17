@@ -7,7 +7,7 @@ import com.tompy.threedog.spring.model.Leader;
 public class CommandSetCommandImpl extends CommandAbstract implements Command
 {
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         String returnValue = "Set InCommand failed.";
         

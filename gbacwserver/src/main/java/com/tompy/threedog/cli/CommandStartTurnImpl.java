@@ -9,7 +9,7 @@ import com.tompy.threedog.spring.service.TurnService;
 public class CommandStartTurnImpl extends CommandAbstract implements Command
 {
     @Override
-    public String doCommand( int gameId, int playerId, String[] args )
+    public String doCommand( int gameId, int playerId, int opponentId, String[] args )
     {
         String returnValue = "Turn not started.";
         StateType playerState = gamePlayerService.getState( gameId, playerId );

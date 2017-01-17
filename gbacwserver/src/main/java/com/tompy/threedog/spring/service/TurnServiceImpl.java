@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tompy.threedog.Constants;
 import com.tompy.threedog.Util;
 import com.tompy.threedog.spring.dao.TurnDAO;
+import com.tompy.threedog.spring.model.ActivationBrigade;
 import com.tompy.threedog.spring.model.Game;
 import com.tompy.threedog.spring.model.GameLeader;
 import com.tompy.threedog.spring.model.Leader;
@@ -25,11 +26,11 @@ import com.tompy.threedog.spring.model.TurnInitiative;
 
 public class TurnServiceImpl implements TurnService
 {
-    private PlayerService playerService;
-    private GameService gameService;
     private TurnDAO turnDAO;
-    private LeaderService leaderService;
+    private GameService gameService;
+    private GameLeaderService gameLeaderService;
     private GamePlayerService gamePlayerService;
+    private LeaderService leaderService;
     private LookupService lookupService;
 
     private final int OFFSET = 3;
@@ -37,6 +38,64 @@ public class TurnServiceImpl implements TurnService
             "1900 Dusk", "2000 Night", "2300 Night" };
 
     protected final Integer[][] emList = { { 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4 }, { 1, 2, 2, 3, 3, 3, 3, 3, 4, 4 } };
+
+
+    @Override
+    @Transactional
+    public Turn getTurnById( int id )
+    {
+        return turnDAO.getTurnById( id );
+    }
+    
+    @Override
+    @Transactional
+    public void activateBrigade( int turnId, int brigadeId, int typeId, String notes )
+    {
+        Turn turn = turnDAO.getTurnById( turnId );
+
+        TurnAMPool am = getCurrentAM( turn.getAmPool() );
+
+        ActivationBrigade ab = new ActivationBrigade( am, leaderService.getLeader( brigadeId ), lookupService.getActivationType( typeId ), notes );
+
+        am.addActivation( ab );
+
+        turnDAO.saveTurn( turn );
+    }
+
+    @Override
+    @Transactional
+    public List< ActivationBrigade > getActivations( int turnId, int brigadeId )
+    {
+        List< ActivationBrigade > returnValue = new ArrayList< ActivationBrigade >();
+
+        Turn turn = turnDAO.getTurnById( turnId );
+
+        for ( TurnAMPool am : turn.getAmPool() )
+        {
+            for ( ActivationBrigade ab : am.getActivations() )
+            {
+                if ( ab.getBrigade().getId() == brigadeId )
+                {
+                    returnValue.add( ab );
+                }
+            }
+        }
+
+        return returnValue;
+    }
+
+    private TurnAMPool getCurrentAM( Set< TurnAMPool > amPool )
+    {
+        for ( TurnAMPool am : amPool )
+        {
+            if ( "A".equals( am.getPicked() ) )
+            {
+                return am;
+            }
+        }
+
+        return null;
+    }
 
     @Override
     @Transactional
@@ -66,6 +125,26 @@ public class TurnServiceImpl implements TurnService
             if ( ta.getDivision().getId() == divisionId )
             {
                 ta.setActivationValue( ta.getActivationValue() + 1 );
+            }
+        }
+
+        turnDAO.saveTurn( turn );
+    }
+
+    @Override
+    @Transactional
+    public void buildAMPool( int turnId )
+    {
+        Turn turn = turnDAO.getTurnById( turnId );
+        for ( TurnActivation ta : turn.getActivation() )
+        {
+            int activations = ta.getActivationValue();
+            activations = ( activations > 4 ? 4 : activations );
+            activations = ( activations < 1 ? 1 : activations );
+
+            for ( int i = 0; i < activations; i++ )
+            {
+                turn.addAM( new TurnAMPool( turn, ta.getDivision() ) );
             }
         }
 
@@ -107,6 +186,7 @@ public class TurnServiceImpl implements TurnService
         Game game = gameService.getGameById( gameId );
         Turn turn = new Turn();
 
+        game.setCurrentTurn( game.getCurrentTurn() + 1 );
         turn.setGame( game );
         turn.setNumber( game.getCurrentTurn() );
         turn.setDescription( getDescription( turn.getNumber() ) );
@@ -139,8 +219,7 @@ public class TurnServiceImpl implements TurnService
 
             turnDAO.saveTurn( currentTurn );
 
-            // Set player state
-            gamePlayerService.setState( gameId, playerId, lookupService.getStateType( Constants.GAME_STARTTURN ) );
+            gamePlayerService.setState( gameId, playerId, Constants.GAME_STARTTURN );
         } // null != currentTurn
 
     }
@@ -228,9 +307,80 @@ public class TurnServiceImpl implements TurnService
                 ta.setActivationValue( count );
             }
         }
-        
+
         turnDAO.saveTurn( turn );
 
+    }
+
+    @Override
+    @Transactional
+    public List< TurnAMPool > getUnpicked( int turnId )
+    {
+        Turn turn = turnDAO.getTurnById( turnId );
+        List< TurnAMPool > amPool = new ArrayList< TurnAMPool >();
+        for ( TurnAMPool am : turn.getAmPool() )
+        {
+            if ( "N".equals( am.getPicked() ) )
+            {
+                amPool.add( am );
+            }
+        }
+
+        return amPool;
+    }
+
+    @Override
+    @Transactional
+    public TurnAMPool drawAM( int turnId )
+    {
+        Turn turn = turnDAO.getTurnById( turnId );
+        List< TurnAMPool > amPool = new ArrayList< TurnAMPool >();
+        for ( TurnAMPool am : turn.getAmPool() )
+        {
+            if ( "N".equals( am.getPicked() ) )
+            {
+                amPool.add( am );
+            }
+            else if ( "A".equals( am.getPicked() ) )
+            {
+                am.setPicked( "Y" );
+            }
+        }
+
+        TurnAMPool amChosen = null;
+        if ( amPool.size() > 0 )
+        {
+            if ( amPool.size() == 1 )
+            {
+                amChosen = amPool.get( 0 );
+            }
+            else
+            {
+                amChosen = amPool.get( Util.randomInt( 0, amPool.size() - 1 ) );
+            }
+            amChosen.setPicked( "A" );
+        }
+
+        turnDAO.saveTurn( turn );
+
+        return amChosen;
+    }
+
+    @Override
+    @Transactional
+    public void setAM( int turnId, int amId, String value )
+    {
+        Turn turn = turnDAO.getTurnById( turnId );
+        for ( TurnAMPool am : turn.getAmPool() )
+        {
+            if ( am.getId() == amId )
+            {
+                am.setPicked( value );
+                break;
+            }
+        }
+
+        turnDAO.saveTurn( turn );
     }
 
     private void rollInitiative( Game game, Turn turn, int side, TurnInitiative myInitiative )
@@ -270,7 +420,7 @@ public class TurnServiceImpl implements TurnService
         int finalInitValue = rand.nextInt( 9 ) + lastTurnModifier;
 
         if ( myInit.getOverall().getTurnOfEntry() > currentNumber &&
-                gameService.getLeaderInfo( game, myInit.getOverall() ).getInCommand().equals( "Y" ) )
+                gameLeaderService.getGameLeader( game.getId(), myInit.getOverall().getId() ).getInCommand().equals( "Y" ) )
         {
             finalInitValue += myInit.getOverall().getInitiativeRating();
         }
@@ -292,11 +442,6 @@ public class TurnServiceImpl implements TurnService
         return returnValue;
     }
 
-    public void setPlayerService( PlayerService playerService )
-    {
-        this.playerService = playerService;
-    }
-
     public void setGameService( GameService gameService )
     {
         this.gameService = gameService;
@@ -307,19 +452,30 @@ public class TurnServiceImpl implements TurnService
         this.turnDAO = turnDAO;
     }
 
+    public void setGamePlayerService( GamePlayerService gamePlayerService )
+    {
+        this.gamePlayerService = gamePlayerService;
+    }
+
+    public void setGameLeaderService( GameLeaderService gameLeaderService )
+    {
+        this.gameLeaderService = gameLeaderService;
+    }
+
     public void setLeaderService( LeaderService leaderService )
     {
         this.leaderService = leaderService;
     }
 
-    public void setGamePlayerService( GamePlayerService gamePlayerService )
+    public LeaderService getLeaderService()
     {
-        this.gamePlayerService = gamePlayerService;
+        return leaderService;
     }
 
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
+
 
 }
