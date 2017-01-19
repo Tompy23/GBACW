@@ -12,7 +12,7 @@
     <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
     <beans:property name="url" value="jdbc:mysql://localhost:3306/threedog" />
     <beans:property name="username" value="process" />
-    <beans:property name="password" value="para747" />
+    <beans:property name="password" value="XXXXXXX" />
   </beans:bean>
 
   <beans:bean id="hibernateAnnotatedSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
